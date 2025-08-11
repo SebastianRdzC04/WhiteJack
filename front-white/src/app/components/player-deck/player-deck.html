@@ -1,39 +1,31 @@
-<div class="flex flex-col items-center">
-    <div class="mb-2">
-        <app-deck [deck]="cards()"></app-deck>
-    </div>
-    <div class="w-full flex justify-center">
-        @if (playerDeck()?.player){
-            <div class="flex flex-col items-center w-full">
-                <div 
-                  class="flex items-center gap-2 px-4 py-2 rounded-xl shadow-lg border-2"
-                  [ngClass]="{
-                    'bg-gradient-to-r from-red-700 via-black to-red-900 border-red-500': isSelected(),
-                    'bg-gradient-to-r from-zinc-900 via-black to-zinc-800 border-zinc-700': !isSelected() && isPlayerDeck(),
-                    'bg-gradient-to-r from-zinc-900 via-black to-zinc-800 border-zinc-800': !isSelected() && !isPlayerDeck()
-                  }"
+<div class="flex flex-col items-center pt-10">
+    <div class="relative bg-gradient-to-br from-red-900 via-zinc-900 to-black border-4 border-red-700 rounded-2xl shadow-xl px-6 py-4 flex flex-col items-center w-[260px]">
+        <div class="absolute -top-7 left-1/2 -translate-x-1/2 bg-black rounded-full border-4 border-red-700 shadow-lg p-2 text-white">
+            <!-- Añadido text-white arriba -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path d="M42 4H12v40h30z"/><path stroke-linecap="round" d="M4 11.79L12 10v34z" clip-rule="evenodd"/><path d="m27 18l-5 6l5 6l5-6z"/><path stroke-linecap="round" d="M18 10v4m18 20v4"/></g></svg>
+        </div>
+        <div class="mt-6 w-full flex flex-col items-center">
+            <!-- Mostrar información del usuario -->
+            @if (playerDeck()?.player){
+                <span 
+                    [ngClass]="{
+                        'bg-yellow-400 text-black font-bold px-2 rounded': isSelected(),
+                        'text-red-400 font-bold': !isSelected() && isPlayerDeck(),
+                        'text-red-200': !isSelected() && !isPlayerDeck()
+                    }"
+                    class="text-lg tracking-wide mb-1 text-center transition-all duration-150"
                 >
-                  <span class="flex items-center">
-                    <svg class="w-5 h-5 mr-1 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-6 2-6 4v1a1 1 0 001 1h10a1 1 0 001-1v-1c0-2-2-4-6-4z"/>
-                    </svg>
-                    <span 
-                      [ngClass]="{
-                        'text-yellow-300 font-bold': isSelected(),
-                        'text-green-400': !isSelected() && isPlayerDeck(),
-                        'text-white': !isSelected() && !isPlayerDeck()
-                      }"
-                    >
-                      {{ player().fullName }}
+                    {{ player().fullName }}
+                </span>
+                @if(playerDeck()?.totalValue !== -1 && !hasAnonymousCards()) {
+                    <span class="text-white text-base font-semibold bg-black/60 px-3 py-1 rounded border border-red-700 shadow mt-1">
+                        Puntos: {{ playerDeck()?.totalValue }}
                     </span>
-                  </span>
-                  @if(playerDeck()?.totalValue !== -1 && !hasAnonymousCards()) {
-                    <span class="ml-4 px-2 py-1 rounded-full bg-black/80 border border-red-600 text-red-300 font-bold text-xs shadow">
-                      {{ playerDeck()?.totalValue }} pts
-                    </span>
-                  }
-                </div>
-            </div>
-        }
+                }
+            }
+        </div>
+        <div class="mt-4 w-full flex justify-center">
+            <app-deck [deck]="cards()"></app-deck>
+        </div>
     </div>
 </div>

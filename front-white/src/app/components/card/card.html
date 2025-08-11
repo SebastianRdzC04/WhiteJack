@@ -1,7 +1,11 @@
 @if (card()?.value === 0){
-  <div class="card-container w-[100px] h-[140px] rounded-lg shadow-lg bg-blue-800 border flex items-center justify-center relative">
-    <div class="w-[80px] h-[120px] bg-gradient-to-br from-blue-600 to-blue-400 rounded-md flex items-center justify-center">
-      <span class="text-4xl text-white font-extrabold select-none">🂠</span>
+  <div class="card-container w-[100px] h-[140px] rounded-lg shadow-lg bg-red-800 border-2 border-white flex items-center justify-center relative overflow-hidden">
+    <div class="w-[80px] h-[120px] bg-gradient-to-br from-red-700 via-red-500 to-red-400 rounded-md flex items-center justify-center relative">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <span class="text-5xl text-white opacity-30 select-none">♠</span>
+      </div>
+      <div class="absolute inset-2 border-2 border-dashed border-white rounded-md pointer-events-none"></div>
+      <span class="text-3xl text-white font-extrabold select-none z-10">★</span>
     </div>
   </div>
 }@else {
