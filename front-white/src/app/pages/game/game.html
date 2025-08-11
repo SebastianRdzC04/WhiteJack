@@ -1,0 +1,85 @@
+<div class="w-screen h-screen flex flex-col bg-gradient-to-b from-black via-zinc-900 to-red-900">
+  <!-- Tablero principal ocupa todo menos la barra inferior -->
+  <div class="flex w-full" style="height:78%;">
+    <div class="w-full h-full flex">
+      @if (winner()) {
+        <div class="absolute left-0 top-0 right-0 bottom-[15%] flex flex-col items-center justify-center z-50 bg-black bg-opacity-70">
+          <h1 class="text-6xl font-extrabold text-red-400 drop-shadow-lg animate-bounce">
+            ¡Ganador: {{winner()?.fullName}}!
+          </h1>
+          <h2 class="text-4xl font-extrabold text-red-400">Decks Finales</h2>
+          <div class="flex gap-5">
+            @for (deck of playerDecks(); track deck.playerId) {
+              <app-player-deck class="mx-auto" [playerDeck]="deck"></app-player-deck>
+            }
+          </div>
+        </div>
+      }
+      @for (deck of playerDecks(); track deck.playerId) {
+        <app-player-deck [isPlayerDeck]="deck.player.email === playerDeck()?.player?.email" [isSelected]="deck.player.email === turnPlayer()?.email" class="mx-auto" [playerDeck]="deck"></app-player-deck>
+      }
+    </div>
+  </div>
+  <!-- Barra inferior más alta y rediseñada -->
+  <div class="h-[22%] bg-black/95 border-t-2 border-red-600 flex items-stretch justify-between shadow-2xl px-8">
+    <!-- Sección izquierda: botones -->
+    <div class="flex items-center gap-4 flex-1">
+      @if(game() && isOwner() && !gameIsActive() && allplayersReady() && numberOfPlayers() >= minNumberOfPlayers ) {
+        <button (click)="startGame()" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-800 text-white font-bold shadow hover:scale-105 transition-all duration-150">
+          Iniciar Juego
+        </button>
+      }
+      @if (game() && readyToRestart() && isOwner()) {
+        <button (click)="restartGame()" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-800 text-white font-bold shadow hover:scale-105 transition-all duration-150">
+          Reiniciar Juego
+        </button>
+      }
+      <button (click)="leaveGame()" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-800 text-white font-bold shadow hover:scale-105 transition-all duration-150">
+        Salir
+      </button>
+      @if (game() && isYourTurn() && !readyToRestart() && gameIsActive()) {
+        <button (click)="pedirCarta()" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-800 text-white font-bold shadow hover:scale-105 transition-all duration-150">
+          Pedir carta
+        </button>
+        <button (click)="terminarTurno()" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-800 text-white font-bold shadow hover:scale-105 transition-all duration-150">
+          Terminar turno
+        </button>
+      }
+      @if( playerDeck() && !playerDeck()?.isReady){
+        <button (click)="playerReady()" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-800 text-white font-bold shadow hover:scale-105 transition-all duration-150">
+          Estar Listo
+        </button>
+      }
+      @if(playerDeck() && timeToBlackJack() && totalValue() === 21) {
+        <button (click)="setBlackJack()" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-800 text-white font-bold shadow hover:scale-105 transition-all duration-150">
+          Declarar BlackJack
+        </button>
+      }
+      <!-- ...otros botones si los necesitas... -->
+    </div>
+    <!-- Sección derecha: código de acceso y datos, rediseñada -->
+    <div class="flex flex-col items-end justify-center min-w-[320px] pl-10">
+      <div class="relative bg-gradient-to-br from-red-900 via-zinc-900 to-black border-4 border-red-700 rounded-2xl shadow-xl px-7 py-4 flex flex-col items-center w-[260px]">
+        <div class="absolute -top-7 left-1/2 -translate-x-1/2 bg-black rounded-full border-4 border-red-700 shadow-lg p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17v1m0-8a4 4 0 00-4 4v3a4 4 0 008 0v-3a4 4 0 00-4-4zm0 0V7a2 2 0 114 0v2" />
+          </svg>
+        </div>
+        <span class="text-xs text-red-300 font-semibold tracking-widest uppercase mt-3">Código de Sala</span>
+        <h3 class="text-3xl font-extrabold text-red-400 tracking-widest bg-black/70 px-6 py-2 rounded-xl border-2 border-red-600 shadow my-2 text-center select-all">
+          {{joinCode()}}
+        </h3>
+        <div class="flex flex-row justify-between w-full mt-2">
+          <div class="flex flex-col items-center flex-1">
+            <span class="text-xs text-red-300 font-semibold uppercase">Jugadores</span>
+            <span class="text-lg text-red-200 font-bold">{{numberOfPlayers()}}</span>
+          </div>
+          <div class="flex flex-col items-center flex-1">
+            <span class="text-xs text-red-300 font-semibold uppercase">Turno</span>
+            <span class="text-sm text-red-200 font-bold text-center truncate max-w-[90px]">{{turnPlayer()?.fullName}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

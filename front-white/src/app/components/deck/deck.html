@@ -1,0 +1,16 @@
+<div
+  class="deck-stack"
+  [style.width.px]="100 + (length() - 1) * 22"
+>
+  @for (card of deck(); track card; let i = $index) {
+    <app-card
+      [card]="card"
+      class="absolute left-0 top-0"
+      [ngStyle]="{
+        'z-index': i,
+        'left.px': i * 22,
+        'top.px': 0
+      }"
+    ></app-card>
+  }
+</div>

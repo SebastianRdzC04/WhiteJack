@@ -1,0 +1,29 @@
+@if (card()?.value === 0){
+  <div class="card-container w-[100px] h-[140px] rounded-lg shadow-lg bg-blue-800 border flex items-center justify-center relative">
+    <div class="w-[80px] h-[120px] bg-gradient-to-br from-blue-600 to-blue-400 rounded-md flex items-center justify-center">
+      <span class="text-4xl text-white font-extrabold select-none">🂠</span>
+    </div>
+  </div>
+}@else {
+  <div class="card-container w-[100px] h-[140px] rounded-lg shadow-lg bg-white border flex flex-col justify-between p-2 relative">
+    <div class="absolute top-2 left-2 flex flex-col items-center gap-[2px]">
+      <span class="text-lg h-fit font-bold">
+        {{ cardRank() }}
+      </span>
+      <span class="text-lg h-fit font-bold" [ngClass]="{'text-red-600': cardSuit() === '♥' || cardSuit() === '♦'}">
+        {{ cardSuit() }}
+      </span>
+    </div>
+    <div class="absolute bottom-2 right-2 flex flex-col items-center gap-[2px]">
+      <span class="text-lg font-bold">
+        {{ cardRank() }}
+      </span>
+      <span class="text-lg font-bold" [ngClass]="{'text-red-600': cardSuit() === '♥' || cardSuit() === '♦'}">
+        {{ cardSuit() }}
+      </span>
+    </div>
+    <div class="flex-grow flex items-center justify-center text-4xl font-bold">
+      <span [ngClass]="{'text-red-600': cardSuit() === '♥' || cardSuit() === '♦'}">{{ cardSuit() }}</span>
+    </div>
+  </div>
+}
